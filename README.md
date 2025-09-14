@@ -258,3 +258,34 @@ const UserType = new GraphQLObjectType({
     };
   },
 ```
+
+### 3.1.2 `Object Types`
+
+`Definition:`
+Object types define a set of fields that can be queried on that type. They are the most common type in GraphQL schemas.
+
+- `note: What GraphQLObjectType actually is`
+
+1. GraphQLObjectType is a constructor function provided by the graphql library.
+
+2. It is used to define the shape of an object in your GraphQL schema.
+```js
+const {
+  GraphQLObjectType,
+
+  GraphQLString,
+  GraphQLInt,
+} = require("graphql");
+
+const UserType = new GraphQLObjectType({
+  name: "Post",
+  description: "User post related data show here",
+  fields: () => {
+    return {
+      title: { type: GraphQLString },
+      content: { type: GraphQLString },
+      view: { type: GraphQLInt },
+    };
+  },
+});
+```
