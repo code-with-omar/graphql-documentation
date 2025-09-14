@@ -1,11 +1,27 @@
-# GraphQL with Express (`express-graphql`)
+# 1. Introduction to GraphQL
 
-## 📌 What is GraphQL?
+- ### 1. What is GraphQL?
+- ### 2. Why Use GraphQL?
+- ### 3. GraphQL vs REST APIs
+- ### 4. Data Fetching with GraphQL
+- ### 5. Over-Fetching and Under-Fetching
 
-GraphQL is a **query language** for APIs and a runtime for executing those queries.  
-It lets clients request exactly the data they need — nothing more, nothing less.
+# 2. Installation in GraphQL
 
-### 🔹 Why use GraphQL?
+- ### 1. Installation in GraphQL
+- ### 2. Setup and Example
+
+# 1. Introduction to GraphQL
+
+### 1. What is GraphQL?
+
+`GraphQL` is an open-source data query language for APIs and It is a server-side runtime for executing the query. The server's `GraphQL` runtime takes care of executing the query and ensuring that the right data is fetched and sent back.
+
+It is an alternative to `REST`, where clients make multiple requests to different endpoints to get the data they require but in `GraphQL` clients can request exactly the data they need in a single query.
+
+It was developed by Facebook and made open source for the whole world.
+
+### 2. Why use GraphQL?
 
 - ✅ Fetch only required data (no over-fetching like REST).
 - ✅ Single endpoint for all queries and mutations.
@@ -13,9 +29,55 @@ It lets clients request exactly the data they need — nothing more, nothing les
 - ✅ Works with any database or backend.
 - ✅ Great developer tools (GraphiQL, Playground).
 
----
+### 3. GraphQL vs REST APIs
 
-## 📌 Installation
+`REST API`
+
+- Requires multiple endpoints for different resources.
+  Example:
+
+  ```js
+  GET /users → Fetch all users
+
+  GET /users/:id → Fetch single user
+
+  POST /users → Create new user
+  ```
+
+- Can suffer from over-fetching (extra data returned) or under-fetching (not enough data, need multiple requests).
+
+- Simple and widely adopted standard (developers are very familiar).
+
+- Easy to use with built-in HTTP caching.
+
+`GraphQL API`
+
+- Uses a single endpoint → /graphql
+
+- Client specifies exactly which fields are needed.
+
+Example:
+
+```js
+  {
+    users {
+      id
+     name
+    }
+  }
+```
+
+- Returns only id and name, nothing extra.
+
+- Uses Queries for reading and Mutations for create/update/delete.
+
+- Supports real-time updates with Subscriptions.
+
+- Strongly typed schema defines the contract between frontend and backend.
+
+# Installation in GraphQL
+
+`Installation`
 
 1. Initialize project:
    ```bash
