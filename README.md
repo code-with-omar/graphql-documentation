@@ -293,7 +293,8 @@ const UserType = new GraphQLObjectType({
 
 ### 3.1.3 Query Types
 
-`Definition`
+`Definition:`
+
 The `Query type` is a special object type that defines all the read operations (i.e., fetching data) in a GraphQL schema.
 
 Example:
@@ -326,4 +327,21 @@ const RootQueryType = new GraphQLObjectType({
   },
 });
 module.exports = { RootQueryType };
+```
+
+### 3.1.4 Not Null Types
+
+`Definition:`
+
+The GraphQLNonNull type wraps another type and signifies that the field cannot be null.
+
+```js
+const { GraphQLNonNull, GraphQLString } = require("graphql");
+
+const UserType = new GraphQLObjectType({
+  name: "User",
+  fields: {
+    name: { type: new GraphQLNonNull(GraphQLString) },
+  },
+});
 ```
