@@ -269,6 +269,7 @@ Object types define a set of fields that can be queried on that type. They are t
 1. GraphQLObjectType is a constructor function provided by the graphql library.
 
 2. It is used to define the shape of an object in your GraphQL schema.
+
 ```js
 const {
   GraphQLObjectType,
@@ -288,4 +289,41 @@ const UserType = new GraphQLObjectType({
     };
   },
 });
+```
+
+### 3.1.3 Query Types
+
+`Definition`
+The `Query type` is a special object type that defines all the read operations (i.e., fetching data) in a GraphQL schema.
+
+Example:
+
+```js
+const { GraphQLObjectType, GraphQLList } = require("graphql");
+const { users } = require("./data");
+
+const UserType = new GraphQLObjectType({
+  name: "user",
+  description: "User post related data show here",
+  fields: () => {
+    return {
+      title: { type: GraphQLString },
+      content: { type: GraphQLString },
+      view: { type: GraphQLInt },
+    };
+  },
+});
+const RootQueryType = new GraphQLObjectType({
+  name: "query",
+  description: "Root Query",
+  fields: () => {
+    return {
+      user: {
+        type: new GraphQLList(UserType),
+        resolve: () => users, // Assume 'users' is an array of user objects. it load data from database
+      },
+    };
+  },
+});
+module.exports = { RootQueryType };
 ```
