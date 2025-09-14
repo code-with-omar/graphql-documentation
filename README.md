@@ -3,13 +3,36 @@
 - ### 1. What is GraphQL?
 - ### 2. Why Use GraphQL?
 - ### 3. GraphQL vs REST APIs
-- ### 4. Data Fetching with GraphQL
-- ### 5. Over-Fetching and Under-Fetching
+- ### 4. Over-Fetching and Under-Fetching
 
 # 2. Installation in GraphQL
 
 - ### 1. Installation in GraphQL
 - ### 2. Setup and Example
+
+# 3. GraphQL Schema
+
+### 3.1 GraphQL Type System
+
+### 3.2 GraphQL Type Language
+
+### 3.3 Object Types and Fields
+
+### 3.3 Arguments in GraphQL Schema
+
+### 3.4 Query and Mutation Types
+
+### 3.5 Scalar Types
+
+### 3.6 Enumeration Types
+
+### 3.7 Lists and Non-Null
+
+### 3.8 Interfaces
+
+### 3.9 Union Types
+
+### 3.10 Input Types
 
 # 1. Introduction to GraphQL
 
@@ -75,6 +98,22 @@ Example:
 
 - Strongly typed schema defines the contract between frontend and backend.
 
+### Side-by-Side Comparison
+
+| Feature            | REST API                      | GraphQL API                   |
+| ------------------ | ----------------------------- | ----------------------------- |
+| **Endpoint**       | Multiple (`/users`, `/posts`) | Single (`/graphql`)           |
+| **Data Fetching**  | Fixed response (all fields)   | Client decides which fields   |
+| **Over-fetching**  | Common problem                | Avoided                       |
+| **Under-fetching** | Requires multiple requests    | Avoided (nested queries)      |
+| **Real-time**      | Limited (requires WebSockets) | Built-in (Subscriptions)      |
+| **Caching**        | Easy (HTTP cache)             | More complex (Apollo, custom) |
+| **Learning Curve** | Easier                        | Steeper (schema, resolvers)   |
+
+---
+
+### 4. Over-Fetching and Under-Fetching
+
 # Installation in GraphQL
 
 `Installation`
@@ -89,7 +128,7 @@ Example:
    npm install express express-graphql graphql
    ```
 
-## 📌 Simple Example
+## Simple Example
 
 index.js
 
@@ -158,4 +197,64 @@ app.listen(4000, () =>
     age
   }
 }
+```
+
+# GraphQL Schema
+
+### 3.1 GraphQL Type System
+
+- GraphQL is a strongly typed language, which means every piece of data in a GraphQL service has a specific type.
+
+- It is a concept in GraphQL which is used to describe the potential of a GraphQL server.
+
+- It helps to define the various data types which are used in a GraphQL application. With the help of Type System, it helps to define the schema, which is a contract between the client and the server.
+
+- It tells us what data type can be queried and what are the operations which can be performed. It also informs us whether a query is valid or not.
+
+- The type system also ensures that queries are valid and provides a clear structure for interacting with the server.
+
+Let's explore the different types in the GraphQL type system
+
+![alt text](/images/dataTypes.png)
+
+### 3.1.1 `Scalar Types`:
+
+`Definition`
+
+Scalar types represent the basic data types in GraphQL. They are the leaves of the query and cannot have subfields.
+
+`Common Scalar Types`
+
+- `GraphQLString- `: Represents textual data.
+
+- `GraphQLInt- `: Represents a 32-bit signed integer.
+
+- `GraphQLFloat- `: Represents a signed double-precision floating-point value.
+
+- `GraphQLBoolean- `: Represents true or false.
+
+- `GraphQLID- `: Represents a unique identifier, often used to refetch an object or as the key for a cache.
+
+```js
+const {
+  GraphQLObjectType,
+  GraphQLID,
+  GraphQLString,
+  GraphQLInt,
+  GraphQLBoolean,
+  GraphQLFloat,
+  GraphQLNonNull,
+} = require("graphql");
+
+const UserType = new GraphQLObjectType({
+  name: "User",
+  description: "User information",
+  fields: () => {
+    return {
+      id: { type: new GraphQLNonNull(GraphQLID) },// id not null
+      name: { type: GraphQLString },
+      age: { type: GraphQLInt },
+      height: { type: GraphQLFloat },
+    };
+  },
 ```
