@@ -345,3 +345,35 @@ const UserType = new GraphQLObjectType({
   },
 });
 ```
+
+### 3.1.5 Enumeration Types (GraphQLEnumType)
+
+`Definition:`
+
+An Enum type is a field that can only have specific predefined values. It’s like a “restricted set of options” for a field.
+
+`When to use Enum : `
+
+- Use enum when a field should only allow certain values.
+
+- Example use cases:
+
+  - Gender → "male" or "female"
+
+  - Status → "active", "inactive", "pending"
+
+  - Role → "admin", "user", "guest"
+
+Example
+
+```js
+const { GraphQLEnumType } = require("graphql");
+
+const GenderEnumType = new GraphQLEnumType({
+  name: "gender",
+  values: {
+    male: { value: "male" },
+    female: { value: "female" },
+  },
+});
+```
