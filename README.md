@@ -377,3 +377,54 @@ const GenderEnumType = new GraphQLEnumType({
   },
 });
 ```
+
+### 3.1.6 List Types (GraphQLList)
+
+`Definition :`
+
+GraphQLList represents a list (array) of values of a particular type. You can use it with scalar types, object types, enum types, etc.
+
+`Analogy:`
+
+- If a single value = apple
+
+- Then GraphQLList(GraphQLString) = [apple, banana, orange]
+
+`Why we use GraphQLList`
+
+- To return multiple items from a query.
+
+- To represent arrays in your data.
+
+- To enforce type checking on every element of the list.
+
+Example 
+```js
+const { GraphQLObjectType, GraphQLList } = require("graphql");
+const { users } = require("./data");
+
+const UserType = new GraphQLObjectType({
+  name: "user",
+  description: "User post related data show here",
+  fields: () => {
+    return {
+      title: { type: GraphQLString },
+      content: { type: GraphQLString },
+      view: { type: GraphQLInt },
+    };
+  },
+});
+const RootQueryType = new GraphQLObjectType({
+  name: "query",
+  description: "Root Query",
+  fields: () => {
+    return {
+      user: {
+        type: new GraphQLList(UserType),
+        resolve: () => users, // Assume 'users' is an array of user objects. it load data from database
+      },
+    };
+  },
+});
+module.exports = { RootQueryType };
+```
