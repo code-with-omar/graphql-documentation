@@ -14,9 +14,7 @@
 
 ### 3.1 GraphQL Type System
 
-### 3.2 GraphQL Type Language
-
-### 3.3 Object Types and Fields
+### 3.2 Object Types and Fields
 
 ### 3.3 Arguments in GraphQL Schema
 
@@ -398,7 +396,8 @@ GraphQLList represents a list (array) of values of a particular type. You can us
 
 - To enforce type checking on every element of the list.
 
-Example 
+Example
+
 ```js
 const { GraphQLObjectType, GraphQLList } = require("graphql");
 const { users } = require("./data");
@@ -428,3 +427,113 @@ const RootQueryType = new GraphQLObjectType({
 });
 module.exports = { RootQueryType };
 ```
+
+### 3.2 Object Types and Fields
+
+`Definition: Object Types`
+Object types define a `set of fields` that can be queried on that type. They are the most common type in GraphQL schemas.
+
+- `note: What GraphQLObjectType actually is`
+
+1. GraphQLObjectType is a constructor function provided by the graphql library.
+
+2. It is used to define the shape of an object in your GraphQL schema.
+
+`What are Fields?: Definition`
+
+- Fields are the properties inside an object type.
+
+- Each field must define:
+  1. A name (id, firstName, etc.)
+  2. A type (e.g., GraphQLString, GraphQLInt, another object type, or a list)
+  3. (Optional) A resolver function if data needs custom fetching
+
+Example
+
+```js
+const {
+  GraphQLObjectType,
+  GraphQLNonNull,
+  GraphQLID,
+  GraphQLString,
+  GraphQLList,
+  GraphQLSchema,
+} = require("graphql");
+
+const students = [
+  {
+    id: "1",
+    name: "Md. Omar Faruk",
+    rollnumber: "190605",
+    address: "pabna",
+  },
+  {
+    id: "2",
+    name: "Sagor",
+    rollnumber: "190621",
+    address: "pabna",
+  },
+];
+
+// 1. Define an object type called student
+
+const StudentType = new GraphQLObjectType({
+  name: "Student",
+  description: "This represents a student",
+  fields: () => ({
+    id: {
+      type: new GraphQLNonNull(GraphQLID),
+    },
+    name: {
+      type: GraphQLString,
+    },
+    rollnumber: {
+      type: GraphQLString,
+    },
+    address: {
+      type: GraphQLString,
+    },
+  }),
+});
+
+// 2. Define Root Query (object type) with fields for fetching students
+
+const RootQueryType = new GraphQLObjectType({
+  name: "Query",
+  description: "Root Query for student",
+  fields: () => ({
+    students: {
+      type: new GraphQLList(StudentType),
+      description: "List of all students",
+      resolve: () => students,
+    },
+    student: {
+      type: StudentType,
+      description: "Get student by ID",
+      args: {
+        id: {
+          type: new GraphQLNonNull(GraphQLID),
+        },
+      },
+      resolve: (parent, args) => students.find(s.id === args.id),
+    },
+  }),
+});
+
+// 3. Export schema
+const schema = new GraphQLSchema({
+  query: RootQueryType,
+});
+module.exports = schema;
+```
+
+How It Matches the Concepts
+
+| Concept from Article     | Example in JS Code Above                                                                               |
+| ------------------------ | ------------------------------------------------------------------------------------------------------ |
+| **Object Type**          | `StudentType` defined with `GraphQLObjectType({ name: "Student", fields: { ... } })`                   |
+| **Fields**               | Inside `fields: () => ({ id, name, rollNumber, address })` – each field has name + type.               |
+| **Scalar types**         | `GraphQLString`, `GraphQLID` are scalar types used for these fields.                                   |
+| **Non-null (`!`)**       | `new GraphQLNonNull(GraphQLID)` and `GraphQLNonNull(GraphQLString)` enforce non-nullable fields.       |
+| **List of object types** | `students` field on the `Query` returns `new GraphQLList(StudentType)` → array of StudentType objects. |
+| **Object types nested**  | `student` field returns a single `StudentType` object via resolver.                                    |
