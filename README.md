@@ -32,6 +32,8 @@
 
 ### 3.10 Input Types
 
+# GraphQL Data Fetching in real time
+
 # 1. Introduction to GraphQL
 
 ### 1. What is GraphQL?
@@ -649,3 +651,24 @@ query {
 }
 
 ```
+
+# GraphQL realtime data fetching (Here we used mvc)
+
+```cmd
+project/
+├── controllers here `resolver`
+│ └── user.controller.js # like resolvers → business logic
+├── models/
+│ └── user.model.js # mongoose or in-memory users
+├── schema/
+│ ├── queries/
+│ │ └── user.query.js # query definitions
+│ ├── mutations/
+│ │ └── user.mutation.js # mutation definitions
+│ ├── types/
+│ │ └── user.type.js # GraphQLObjectType for User
+│ └── schema.js or index.js # combine Query + Mutation → Schema
+├── server.js
+
+```
+
