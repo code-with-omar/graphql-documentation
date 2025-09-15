@@ -745,6 +745,20 @@ const users = [
 module.exports = { users };
 ```
 
+### `Resolver`-> user.resolver.js
+
+```js
+const { users } = require("../models/user.model");
+
+const userResolver = {
+  getUsers: () => {
+    return users;
+  },
+  getUserById: (id) => users.find((user) => user.id == id),
+};
+module.exports = { userResolver };
+```
+
 ### Schema
 
 1. `schema.js`
@@ -802,6 +816,7 @@ const userQueries = {
 };
 module.exports = { userQueries };
 ```
+
 4. `Types` -> user.type.js
 
 ```js
@@ -855,6 +870,4 @@ const UserType = new GraphQLObjectType({
 });
 
 module.exports = { UserType };
-
 ```
-
