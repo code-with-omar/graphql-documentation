@@ -672,3 +672,90 @@ project/
 
 ```
 
+### `server.js/ index.js` here create server
+
+```js
+const express = require("express");
+const { graphqlHTTP } = require("express-graphql");
+const { schema } = require("./schema/schema");
+
+const app = express();
+
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema: schema,
+    graphiql: true,
+    // rootValue,
+  })
+);
+
+app.listen(5000, () => {
+  console.log("Server running on http://localhost:5000/graphql");
+});
+```
+
+### `Models`
+
+models/user.model.js
+
+```js
+const users = [
+  {
+    id: 1,
+    firstName: "Omar",
+    lastName: "Faruk",
+    gender: "male",
+    phone: "01831342230",
+    email: "omarfaruk65142@gmail.com",
+  },
+  {
+    id: 2,
+    firstName: "Shrabony",
+    lastName: "Akter",
+    gender: "female",
+    phone: "01711223344",
+    email: "shrabony@example.com",
+  },
+  {
+    id: 3,
+    firstName: "Rahim",
+    lastName: "Uddin",
+    gender: "male",
+    phone: "01811111111",
+    email: "rahim.uddin@example.com",
+  },
+  {
+    id: 4,
+    firstName: "Karima",
+    lastName: "Begum",
+    gender: "female",
+    phone: "01722222222",
+    email: "karima.begum@example.com",
+  },
+  {
+    id: 5,
+    firstName: "Sabbir",
+    lastName: "Hasan",
+    gender: "male",
+    phone: "01833333333",
+    email: "sabbir.hasan@example.com",
+  },
+];
+module.exports = { users };
+```
+
+### Schema
+
+`schema.js`
+
+```js
+const { GraphQLSchema } = require("graphql");
+const { RootQueryType } = require("./rootQueries");
+
+const schema = new GraphQLSchema({
+  query: RootQueryType,
+});
+
+module.exports = { schema };
+```
