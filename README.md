@@ -537,3 +537,115 @@ How It Matches the Concepts
 | **Non-null (`!`)**       | `new GraphQLNonNull(GraphQLID)` and `GraphQLNonNull(GraphQLString)` enforce non-nullable fields.       |
 | **List of object types** | `students` field on the `Query` returns `new GraphQLList(StudentType)` → array of StudentType objects. |
 | **Object types nested**  | `student` field returns a single `StudentType` object via resolver.                                    |
+
+### 3.3 Arguments in GraphQL Schema
+
+`What are Arguments in GraphQL?`
+
+- In GraphQL, `arguments` let you pass values into fields.
+- They work like function `parameters`.
+- `Arguments` are defined in the schema (with a type) and then used inside resolvers.
+
+Example in JS (with graphql)
+
+1. Dummy Data
+
+```js
+const users = [
+  { id: "1", name: "Alice", age: 22 },
+  { id: "2", name: "Bob", age: 25 },
+  { id: "3", name: "Charlie", age: 30 },
+];
+```
+
+2. Define User Type
+
+```js
+const {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLID,
+  GraphQLInt,
+  GraphQLList,
+  GraphQLNonNull,
+  GraphQLSchema,
+} = require("graphql");
+
+// User type
+const UserType = new GraphQLObjectType({
+  name: "User",
+  fields: () => ({
+    id: { type: GraphQLID },
+    name: { type: GraphQLString },
+    age: { type: GraphQLInt },
+  }),
+});
+```
+
+3. Root Query with Arguments
+
+```js
+const RootQuery = new GraphQLObjectType({
+  name: "Query",
+  fields: {
+    users: {
+      type: new GraphQLList(UserType),
+      resolve: () => users,
+    },
+    user: {
+      type: UserType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLID) }, // 👈 Argument defined here
+      },
+      resolve: (parent, args) => {
+        return users.find((user) => user.id === args.id); // use args in resolver
+      },
+    },
+    usersByAge: {
+      type: new GraphQLList(UserType),
+      args: {
+        minAge: { type: GraphQLInt }, // 👈 Argument defined here
+        maxAge: { type: GraphQLInt }, // 👈 Argument defined here
+      },
+      resolve: (parent, args) => {
+        return users.filter(
+          (user) =>
+            (!args.minAge || user.age >= args.minAge) &&
+            (!args.maxAge || user.age <= args.maxAge) // use args in resolver
+        );
+      },
+    },
+  },
+});
+
+module.exports = new GraphQLSchema({
+  query: RootQuery,
+});
+```
+
+How to Query with Arguments (GraphiQL Example)
+
+Get single user by ID:
+
+```cmd
+query {
+  user(id: "2") {
+    id
+    name
+    age
+  }
+}
+```
+
+Get users by age range:
+
+```cmd
+query {
+  usersByAge(minAge: 23, maxAge: 30) {
+    id
+    name
+    age
+  }
+}
+
+```
