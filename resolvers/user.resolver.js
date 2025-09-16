@@ -5,5 +5,6 @@ const userResolver = {
     return users;
   },
   getUserById: (id) => users.find((user) => user.id == id),
+
 };
 module.exports = { userResolver };

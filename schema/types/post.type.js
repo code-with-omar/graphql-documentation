@@ -4,30 +4,27 @@ const {
   GraphQLID,
   GraphQLString,
 } = require("graphql");
-const { UserType } = require("./user.type");
 const { users } = require("../../models/user.model");
 
 const PostType = new GraphQLObjectType({
   name: "Post",
-  description: "user related post",
+  description: "It represents a single post",
   fields: () => {
+    // ✅ Lazy require here to avoid circular dependency
+    const { UserType } = require("./user.type");
+
     return {
-      id: {
-        type: new GraphQLNonNull(GraphQLID),
-      },
-      title: {
-        type: GraphQLString,
-      },
-      description: {
-        type: GraphQLString,
-      },
+      id: { type: new GraphQLNonNull(GraphQLID) },
+      title: { type: new GraphQLNonNull(GraphQLString) },
+      description: { type: GraphQLString },
       user: {
         type: UserType,
-        resolve: (post, _) => {
-          return users.find((user) => user.id == post.user); // here load user "Relationship Between Two Different Types"
+        resolve: (post) => {
+          return users.find((user) => user.id == post.user); // find user by post 
         },
       },
     };
   },
 });
+
 module.exports = { PostType };

@@ -4,7 +4,11 @@ const {
   GraphQLObjectType,
   GraphQLNonNull,
   GraphQLString,
+  GraphQLList,
 } = require("graphql");
+const { PostType } = require("./post.type");
+const { users } = require("../../models/user.model");
+const { postResolver } = require("../../resolvers/post.reslover");
 
 // gender enum type
 const GenderEnumType = new GraphQLEnumType({
@@ -42,6 +46,12 @@ const UserType = new GraphQLObjectType({
       },
       email: {
         type: GraphQLString,
+      },
+      posts: {
+        type: new GraphQLList(PostType),
+        resolve: (parent, args) => {
+          return postResolver.getPostByUserId(parent); // find post in user by user id
+        },
       },
     };
   },
