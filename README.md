@@ -1482,3 +1482,48 @@ const RootQueryType = new GraphQLObjectType({
 });
 module.exports = { RootQueryType };
 ```
+
+### Output:
+
+```cmd
+{
+  users {
+    firstName,
+    lastName,
+    posts {
+      id
+      title
+      description
+    }
+  }
+}
+another
+{
+  
+    posts {
+      id
+      title
+      description
+    }
+  
+}
+// another
+{
+  
+    posts {
+      id
+      title
+      description
+      user{
+        id
+        firstName
+        lastName
+        email
+        
+      }
+    }
+  
+}
+more....
+
+```
