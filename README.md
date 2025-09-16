@@ -1033,7 +1033,9 @@ After Relationship Between Two Different Types output
 }
 ```
 
-# Another use case `Relationship Between Two Different Types`
+# Another use case query and mutation
+
+## Query and Nested Query:`Relationship Between Two Different Types Nested query`
 
 ### `Server: index.js`
 
@@ -1499,17 +1501,17 @@ module.exports = { RootQueryType };
 }
 another
 {
-  
+
     posts {
       id
       title
       description
     }
-  
+
 }
 // another
 {
-  
+
     posts {
       id
       title
@@ -1519,11 +1521,12 @@ another
         firstName
         lastName
         email
-        
+
       }
     }
-  
+
 }
 more....
 
 ```
+

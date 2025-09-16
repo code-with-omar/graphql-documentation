@@ -9,20 +9,8 @@ const {
 const { PostType } = require("./post.type");
 const { users } = require("../../models/user.model");
 const { postResolver } = require("../../resolvers/post.reslover");
+const { GenderEnumType } = require("../enums/gender.enum");
 
-// gender enum type
-const GenderEnumType = new GraphQLEnumType({
-  name: "GenderEnumType",
-  description: "Enum type for gender",
-  values: {
-    male: {
-      value: "male",
-    },
-    female: {
-      value: "female",
-    },
-  },
-});
 // user type
 const UserType = new GraphQLObjectType({
   name: "User",
