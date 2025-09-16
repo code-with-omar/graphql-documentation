@@ -1533,6 +1533,7 @@ more....
 ## Mutation (Here you used all procedure about above data) -> server,models are same
 
 ### Resolvers
+
 `user.resolver.js`
 
 ```js
@@ -1561,11 +1562,28 @@ const userResolver = {
   },
 };
 module.exports = { userResolver };
-
 ```
 
 ### Schema
+
+`schema/mutations/rootMutation.js`
+
+```js
+const { GraphQLObjectType } = require("graphql");
+const { userMutation } = require("./user.mutation");
+
+const RootMutationType = new GraphQLObjectType({
+  name: "Mutation",
+  description: "Root Mutation",
+  fields: () => ({
+    ...userMutation,
+  }),
+});
+module.exports = { RootMutationType };
+```
+
 `schema/mutations/user.mutation.js`
+
 ```js
 const { GraphQLNonNull } = require("graphql");
 const { UserType } = require("../types/user.type");
@@ -1586,5 +1604,4 @@ const userMutation = {
   },
 };
 module.exports = { userMutation };
-
 ```
