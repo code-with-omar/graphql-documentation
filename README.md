@@ -1530,3 +1530,37 @@ more....
 
 ```
 
+## Mutation (Here you used all procedure about above data) -> server,models are same
+
+### Resolvers
+`user.resolver.js`
+
+```js
+const { users } = require("../models/user.model");
+// getusers, and getUserById for query
+const userResolver = {
+  getUsers: () => {
+    return users;
+  },
+  getUserById: (id) => users.find((user) => user.id == id),
+  // uploadUser For modulation
+  uploadUser: (input) => {
+    const { firstName, lastName, gender, phone, email, posts } = input;
+    const newUser = {
+      id: users.length + 1,
+      firstName,
+      lastName,
+      gender,
+      phone,
+      email,
+      posts: [],
+    };
+
+    users.push(newUser);
+    return newUser;
+  },
+};
+module.exports = { userResolver };
+
+```
+
