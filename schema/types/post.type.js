@@ -24,7 +24,7 @@ const PostType = new GraphQLObjectType({
       user: {
         type: UserType,
         resolve: (post, _) => {
-          return users.find((user) => user.id == post.user);
+          return users.find((user) => user.id == post.user); // here load user "Relationship Between Two Different Types"
         },
       },
     };

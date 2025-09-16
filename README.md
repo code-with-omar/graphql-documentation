@@ -745,7 +745,50 @@ const users = [
 module.exports = { users };
 ```
 
-### `Resolver`-> user.resolver.js
+models/post.model.js
+
+```js
+const posts = [
+  {
+    id: 1,
+    title: "GraphQL schema",
+    description:
+      "Introduction to building GraphQL schema with types and resolvers.",
+    user: 1,
+  },
+  {
+    id: 2,
+    title: "React Basics",
+    description: "Understanding components, props, and state in React.",
+    user: 2,
+  },
+  {
+    id: 3,
+    title: "Node.js Server",
+    description: "Setting up a simple Express server for APIs.",
+    user: 3,
+  },
+  {
+    id: 4,
+    title: "MongoDB Models",
+    description:
+      "Defining schema and models in Mongoose for database operations.",
+    user: 4,
+  },
+  {
+    id: 5,
+    title: "Authentication",
+    description: "How to implement login and signup with JWT.",
+    user: 5,
+  },
+];
+
+module.exports = { posts };
+```
+
+### `Resolver`-> user.resolver.js, post.resolver.js
+
+`user.resolver.js`
 
 ```js
 const { users } = require("../models/user.model");
@@ -757,6 +800,22 @@ const userResolver = {
   getUserById: (id) => users.find((user) => user.id == id),
 };
 module.exports = { userResolver };
+```
+
+`post.resolver.js`
+
+```js
+const { posts } = require("../models/post.model");
+
+const postResolver = {
+  getPosts: () => {
+    return posts;
+  },
+  getPostById: (id) => {
+    return posts.find((post) => post.id == id);
+  },
+};
+module.exports = { postResolver };
 ```
 
 ### Schema
@@ -779,18 +838,22 @@ module.exports = { schema };
 ```js
 const { GraphQLObjectType } = require("graphql");
 const { userQueries } = require("./queries/user.query");
+const { postQueries } = require("./queries/post.query");
 
 const RootQueryType = new GraphQLObjectType({
   name: "Query",
   description: "Root Query",
   fields: () => ({
-    ...userQueries, // ✅ spread all queries as fields of Query
+    ...userQueries,
+    ...postQueries, // ✅ spread all queries as fields of Query
   }),
 });
 module.exports = { RootQueryType };
 ```
 
-3. `queries`-> queries/user.query.js
+3. `queries`-> queries/user.query.js, queries/post.query.js
+
+`queries/user.query.js`
 
 ```js
 const { GraphQLList, GraphQLNonNull, GraphQLID } = require("graphql");
@@ -817,7 +880,38 @@ const userQueries = {
 module.exports = { userQueries };
 ```
 
-4. `Types` -> user.type.js
+`queries/post.query.js`
+
+```js
+const { GraphQLList, GraphQLNonNull, GraphQLID } = require("graphql");
+const { PostType } = require("../types/post.type");
+const { postResolver } = require("../../resolvers/post.reslover");
+
+const postQueries = {
+  posts: {
+    type: GraphQLList(new GraphQLNonNull(PostType)),
+    resolve: () => {
+      return postResolver.getPosts();
+    },
+  },
+  post: {
+    type: PostType,
+    args: {
+      id: {
+        type: new GraphQLNonNull(GraphQLID),
+      },
+    },
+    resolve: (parent, args) => {
+      return postResolver.getPostById(args.id);
+    },
+  },
+};
+module.exports = { postQueries };
+```
+
+4. `Types` -> user.type.js, post.type.js
+
+`user.type.js`
 
 ```js
 const {
@@ -870,4 +964,71 @@ const UserType = new GraphQLObjectType({
 });
 
 module.exports = { UserType };
+```
+
+`post.type.js`
+
+```js
+const {
+  GraphQLObjectType,
+  GraphQLNonNull,
+  GraphQLID,
+  GraphQLString,
+} = require("graphql");
+const { UserType } = require("./user.type");
+const { users } = require("../../models/user.model");
+
+const PostType = new GraphQLObjectType({
+  name: "Post",
+  description: "user related post",
+  fields: () => {
+    return {
+      id: {
+        type: new GraphQLNonNull(GraphQLID),
+      },
+      title: {
+        type: GraphQLString,
+      },
+      description: {
+        type: GraphQLString,
+      },
+      user: {
+        type: UserType,
+        resolve: (post, _) => {
+          return users.find((user) => user.id == post.user); // here load user "Relationship Between Two Different Types"
+        },
+      },
+    };
+  },
+});
+module.exports = { PostType };
+```
+
+After Relationship Between Two Different Types output
+
+```cmd
+{
+  posts {
+	id
+  title
+  description
+  user{
+    id,
+    lastName
+  }
+  }
+}
+// by id
+
+{
+  post(id:"1") {
+	id
+  title
+  description
+  user{
+    id,
+    lastName
+  }
+  }
+}
 ```
