@@ -1032,3 +1032,453 @@ After Relationship Between Two Different Types output
   }
 }
 ```
+
+# Another use case `Relationship Between Two Different Types`
+
+### `Server: index.js`
+
+```js
+const express = require("express");
+const { graphqlHTTP } = require("express-graphql");
+const { schema } = require("./schema/schema");
+
+const app = express();
+
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema: schema,
+    graphiql: true,
+    // rootValue,
+  })
+);
+
+app.listen(5000, () => {
+  console.log("Server running on http://localhost:5000/graphql");
+});
+```
+
+### Models
+
+`models/user.model.js`
+
+```js
+const users = [
+  {
+    id: 1,
+    firstName: "Omar",
+    lastName: "Faruk",
+    gender: "male",
+    phone: "01831342230",
+    email: "omarfaruk65142@gmail.com",
+    posts: [1, 2, 4],
+  },
+  {
+    id: 2,
+    firstName: "Shrabony",
+    lastName: "Akter",
+    gender: "female",
+    phone: "01711223344",
+    email: "shrabony@example.com",
+    posts: [3, 5],
+  },
+  {
+    id: 3,
+    firstName: "Rahim",
+    lastName: "Uddin",
+    gender: "male",
+    phone: "01811111111",
+    email: "rahim.uddin@example.com",
+    posts: [7],
+  },
+  {
+    id: 4,
+    firstName: "Karima",
+    lastName: "Begum",
+    gender: "female",
+    phone: "01722222222",
+    email: "karima.begum@example.com",
+    posts: [6],
+  },
+  {
+    id: 5,
+    firstName: "Sabbir",
+    lastName: "Hasan",
+    gender: "male",
+    phone: "01833333333",
+    email: "sabbir.hasan@example.com",
+    posts: [8, 9],
+  },
+  {
+    id: 6,
+    firstName: "Nusrat",
+    lastName: "Jahan",
+    gender: "female",
+    phone: "01744444444",
+    email: "nusrat.jahan@example.com",
+    posts: [10],
+  },
+  {
+    id: 7,
+    firstName: "Mahmud",
+    lastName: "Khan",
+    gender: "male",
+    phone: "01855555555",
+    email: "mahmud.khan@example.com",
+    posts: [15],
+  },
+  {
+    id: 8,
+    firstName: "Salma",
+    lastName: "Khatun",
+    gender: "female",
+    phone: "01766666666",
+    email: "salma.khatun@example.com",
+    posts: [12, 14],
+  },
+  {
+    id: 9,
+    firstName: "Rashed",
+    lastName: "Ali",
+    gender: "male",
+    phone: "01877777777",
+    email: "rashed.ali@example.com",
+    posts: [13],
+  },
+  {
+    id: 10,
+    firstName: "Mitu",
+    lastName: "Rahman",
+    gender: "female",
+    phone: "01788888888",
+    email: "mitu.rahman@example.com",
+    posts: [11],
+  },
+];
+module.exports = { users };
+```
+
+`models/post.model.js`
+
+```js
+const posts = [
+  {
+    id: 1,
+    title: "GraphQL schema",
+    description:
+      "Introduction to building GraphQL schema with types and resolvers.",
+    user: 1,
+  },
+  {
+    id: 2,
+    title: "React Basics",
+    description: "Understanding components, props, and state in React.",
+    user: 1,
+  },
+  {
+    id: 3,
+    title: "Node.js Server",
+    description: "Setting up a simple Express server for APIs.",
+    user: 2,
+  },
+  {
+    id: 4,
+    title: "MongoDB Models",
+    description:
+      "Defining schema and models in Mongoose for database operations.",
+    user: 1,
+  },
+  {
+    id: 5,
+    title: "Authentication",
+    description: "How to implement login and signup with JWT.",
+    user: 2,
+  },
+  {
+    id: 6,
+    title: "Authorization",
+    description: "Role-based access control in REST and GraphQL APIs.",
+    user: 4,
+  },
+  {
+    id: 7,
+    title: "Frontend Deployment",
+    description: "Deploying React apps to Vercel and Netlify.",
+    user: 3,
+  },
+  {
+    id: 8,
+    title: "Backend Deployment",
+    description: "Hosting Node.js applications on Render and Railway.",
+    user: 5,
+  },
+  {
+    id: 9,
+    title: "GraphQL Queries",
+    description: "How to fetch data using queries in GraphQL.",
+    user: 5,
+  },
+  {
+    id: 10,
+    title: "GraphQL Mutations",
+    description: "Updating data in the backend with mutations.",
+    user: 6,
+  },
+  {
+    id: 11,
+    title: "GraphQL Subscriptions",
+    description: "Real-time data with subscriptions in GraphQL.",
+    user: 10,
+  },
+  {
+    id: 12,
+    title: "React Hooks",
+    description: "Using useState, useEffect, and custom hooks.",
+    user: 8,
+  },
+  {
+    id: 13,
+    title: "Redux Toolkit",
+    description: "State management using Redux Toolkit in React.",
+    user: 9,
+  },
+  {
+    id: 14,
+    title: "Tailwind CSS",
+    description: "Styling React components with Tailwind CSS utility classes.",
+    user: 8,
+  },
+  {
+    id: 15,
+    title: "Next.js API Routes",
+    description: "Creating backend API endpoints inside Next.js.",
+    user: 7,
+  },
+];
+module.exports = { posts };
+```
+
+### Resolver
+
+`/resolver/user.resolver.js`
+
+```js
+const { users } = require("../models/user.model");
+
+const userResolver = {
+  getUsers: () => {
+    return users;
+  },
+  getUserById: (id) => users.find((user) => user.id == id),
+};
+module.exports = { userResolver };
+```
+
+`resolver/post.resolver`
+
+```js
+const { posts } = require("../models/post.model");
+
+const postResolver = {
+  getPosts: () => {
+    return posts;
+  },
+  getPostById: (id) => {
+    return posts.find((post) => post.id == id);
+  },
+  getPostByUserId: (parent) => {
+    // parent.posts contains array of post IDs
+    return posts.filter((post) => parent.posts.includes(post.id)); // find user post by user id
+  },
+};
+module.exports = { postResolver };
+```
+
+### Schema
+
+`schema/queries/user.query.js`
+
+```js
+const { GraphQLList, GraphQLNonNull, GraphQLID } = require("graphql");
+const { userResolver } = require("../../resolvers/user.resolver");
+const { UserType } = require("../types/user.type");
+
+const userQueries = {
+  users: {
+    type: new GraphQLList(new GraphQLNonNull(UserType)),
+    resolve: () => {
+      return userResolver.getUsers(); // here data fetching in database
+    },
+  },
+  user: {
+    type: UserType,
+    args: {
+      id: { type: new GraphQLNonNull(GraphQLID) }, // ✅ define argument
+    },
+    resolve: (parent, args) => {
+      return userResolver.getUserById(args.id); // ✅ correct usage
+    },
+  },
+};
+module.exports = { userQueries };
+```
+
+`schema/queries/post.query.js`
+
+```js
+const { GraphQLList, GraphQLNonNull, GraphQLID } = require("graphql");
+const { PostType } = require("../types/post.type");
+const { postResolver } = require("../../resolvers/post.reslover");
+
+const postQueries = {
+  posts: {
+    type: GraphQLList(new GraphQLNonNull(PostType)),
+    resolve: () => {
+      return postResolver.getPosts();
+    },
+  },
+  post: {
+    type: PostType,
+    args: {
+      id: {
+        type: new GraphQLNonNull(GraphQLID),
+      },
+    },
+    resolve: (parent, args) => {
+      return postResolver.getPostById(args.id);
+    },
+  },
+};
+module.exports = { postQueries };
+```
+
+`schema/types/user.type.js`
+
+```js
+const {
+  GraphQLEnumType,
+  GraphQLID,
+  GraphQLObjectType,
+  GraphQLNonNull,
+  GraphQLString,
+  GraphQLList,
+} = require("graphql");
+const { PostType } = require("./post.type");
+const { users } = require("../../models/user.model");
+const { postResolver } = require("../../resolvers/post.reslover");
+
+// gender enum type
+const GenderEnumType = new GraphQLEnumType({
+  name: "GenderEnumType",
+  description: "Enum type for gender",
+  values: {
+    male: {
+      value: "male",
+    },
+    female: {
+      value: "female",
+    },
+  },
+});
+// user type
+const UserType = new GraphQLObjectType({
+  name: "User",
+  description: "It represent a single user",
+  fields: () => {
+    return {
+      id: {
+        type: new GraphQLNonNull(GraphQLID),
+      },
+      firstName: {
+        type: new GraphQLNonNull(GraphQLString),
+      },
+      lastName: {
+        type: new GraphQLNonNull(GraphQLString),
+      },
+      gender: {
+        type: GenderEnumType,
+      },
+      phone: {
+        type: new GraphQLNonNull(GraphQLString),
+      },
+      email: {
+        type: GraphQLString,
+      },
+      posts: {
+        type: new GraphQLList(PostType),
+        resolve: (parent, args) => {
+          return postResolver.getPostByUserId(parent); // find post in user by user id
+        },
+      },
+    };
+  },
+});
+
+module.exports = { UserType };
+```
+
+`schema/types/post.type.js`
+
+```js
+const {
+  GraphQLObjectType,
+  GraphQLNonNull,
+  GraphQLID,
+  GraphQLString,
+} = require("graphql");
+const { users } = require("../../models/user.model");
+
+const PostType = new GraphQLObjectType({
+  name: "Post",
+  description: "It represents a single post",
+  fields: () => {
+    // ✅ Lazy require here to avoid circular dependency
+    const { UserType } = require("./user.type");
+
+    return {
+      id: { type: new GraphQLNonNull(GraphQLID) },
+      title: { type: new GraphQLNonNull(GraphQLString) },
+      description: { type: GraphQLString },
+      user: {
+        type: UserType,
+        resolve: (post) => {
+          return users.find((user) => user.id == post.user); // find user by post
+        },
+      },
+    };
+  },
+});
+
+module.exports = { PostType };
+```
+
+`schema/schema.js`
+
+```js
+const { GraphQLSchema } = require("graphql");
+const { RootQueryType } = require("./rootQueries");
+
+const schema = new GraphQLSchema({
+  query: RootQueryType,
+});
+
+module.exports = { schema };
+```
+
+`schema/rootQueries.js`
+
+```js
+const { GraphQLObjectType } = require("graphql");
+const { userQueries } = require("./queries/user.query");
+const { postQueries } = require("./queries/post.query");
+
+const RootQueryType = new GraphQLObjectType({
+  name: "Query",
+  description: "Root Query",
+  fields: () => ({
+    ...userQueries,
+    ...postQueries, // ✅ spread all queries as fields of Query
+  }),
+});
+module.exports = { RootQueryType };
+```

@@ -20,7 +20,7 @@ const PostType = new GraphQLObjectType({
       user: {
         type: UserType,
         resolve: (post) => {
-          return users.find((user) => user.id == post.user); // find user by post 
+          return users.find((user) => user.id == post.user); // find user by post
         },
       },
     };
@@ -28,3 +28,5 @@ const PostType = new GraphQLObjectType({
 });
 
 module.exports = { PostType };
+
+
