@@ -1656,3 +1656,28 @@ const userInputType = new GraphQLInputObjectType({
 });
 module.exports = { userInputType };
 ```
+
+### Output with example
+
+```cmd
+mutation{
+  addUser(input:{
+    firstName:"Hero",
+    lastName:"Alom",
+   	gender:male,
+    phone:"01831342230",
+    email:"demo@gmail.com"
+
+  }) {
+    id,
+    firstName,
+    lastName,
+    gender,
+    phone,
+    email,
+    posts {
+      id
+    }
+  }
+}
+```
