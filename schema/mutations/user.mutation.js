@@ -1,8 +1,10 @@
-const { GraphQLNonNull } = require("graphql");
+const { GraphQLNonNull, GraphQLID } = require("graphql");
 const { UserType } = require("../types/user.type");
 
 const { userResolver } = require("../../resolvers/user.resolver");
 const { userInputType } = require("../types/userInput.type");
+const { updateUserInputType } = require("../types/userUpdate.type");
+
 const userMutation = {
   addUser: {
     type: UserType,
@@ -13,6 +15,20 @@ const userMutation = {
     },
     resolve: (_, args) => {
       return userResolver.uploadUser(args.input);
+    },
+  },
+  updateUser: {
+    type: UserType,
+    args: {
+      id: {
+        type: GraphQLID,
+      },
+      input: {
+        type: updateUserInputType,
+      },
+    },
+    resolve: (_, args) => {
+      return userResolver.updateUser(args.id, args.input);
     },
   },
 };

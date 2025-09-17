@@ -21,5 +21,17 @@ const userResolver = {
     users.push(newUser);
     return newUser;
   },
+
+  updateUser: (id, input) => {
+    const { firstName, lastName, gender, phone, email } = input;
+    const user = users.find((u) => u.id == id);
+    if (!user) throw new Error("User not found");
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
+    if (gender) user.gender = gender;
+    if (phone) user.phone = phone;
+    if (email) user.email = email;
+    return user;
+  },
 };
 module.exports = { userResolver };
