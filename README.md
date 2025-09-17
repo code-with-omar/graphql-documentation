@@ -1796,4 +1796,44 @@ variable-> json formate
 
 ```
 
-### 3. Delete
+### 3. Delete -> Here only write delete related codes
+
+`Schema/mutations/user.mutation.js`
+
+```js
+const { GraphQLNonNull, GraphQLID, GraphQLBoolean } = require("graphql");
+const { userResolver } = require("../../resolvers/user.resolver");
+const { updateUserInputType } = require("../types/userUpdate.type");
+
+const userMutation = {
+  deleteUser: {
+    type: new GraphQLNonNull(GraphQLBoolean),
+    args: {
+      id: {
+        type: GraphQLID,
+      },
+    },
+    resolve: (_, args) => {
+      return userResolver.deleteUser(args.id);
+    },
+  },
+};
+module.exports = { userMutation };
+```
+
+`resolvers/user.resolver.js`
+
+```js
+const { users } = require("../models/user.model");
+
+const userResolver = {
+  deleteUser: (id) => {
+    const index = users.findIndex((u) => u.id == id);
+    if (index === -1) return false;
+    const deleteUser = users[index]; // find delete user
+    users.splice(index, 1);
+    return true;
+  },
+};
+module.exports = { userResolver };
+```
