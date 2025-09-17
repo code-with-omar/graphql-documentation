@@ -1772,3 +1772,26 @@ const userMutation = {
 };
 module.exports = { userMutation };
 ```
+
+### Output:
+
+```graphiql
+
+mutation($id:ID,$input:updateUserInputType){
+  updateUser(id:$id,input:$input){
+    id,
+    firstName,
+    email
+  }
+}
+
+variable-> json formate
+{
+  "id":"10",
+  "input":{
+    "firstName":"Rashed",
+    "email":"rashed@gmail.com"
+  }
+}
+
+```
