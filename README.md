@@ -1532,6 +1532,8 @@ more....
 
 ## Mutation (Here you used all procedure about above data) -> server,models are same
 
+### Input
+
 ### Resolvers
 
 `user.resolver.js`
@@ -1680,4 +1682,30 @@ mutation{
     }
   }
 }
+```
+
+### Update
+
+### Resolvers
+
+`user.resolver.js` -> Here Write only update code.
+
+```js
+const { users } = require("../models/user.model");
+
+const userResolver = {
+  // update user
+  updateUser: (id, input) => {
+    const { firstName, lastName, gender, phone, email } = input;
+    const user = users.find((u) => u.id == id);
+    if (!user) throw new Error("User not found");
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
+    if (gender) user.gender = gender;
+    if (phone) user.phone = phone;
+    if (email) user.email = email;
+    return user;
+  },
+};
+module.exports = { userResolver };
 ```

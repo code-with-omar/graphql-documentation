@@ -21,7 +21,7 @@ const userResolver = {
     users.push(newUser);
     return newUser;
   },
-
+// update user
   updateUser: (id, input) => {
     const { firstName, lastName, gender, phone, email } = input;
     const user = users.find((u) => u.id == id);
