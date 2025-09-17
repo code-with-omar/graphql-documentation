@@ -1,4 +1,4 @@
-const { GraphQLNonNull, GraphQLID } = require("graphql");
+const { GraphQLNonNull, GraphQLID, GraphQLBoolean } = require("graphql");
 const { UserType } = require("../types/user.type");
 
 const { userResolver } = require("../../resolvers/user.resolver");
@@ -29,6 +29,17 @@ const userMutation = {
     },
     resolve: (_, args) => {
       return userResolver.updateUser(args.id, args.input);
+    },
+  },
+  deleteUser: {
+    type: new GraphQLNonNull(GraphQLBoolean),
+    args: {
+      id: {
+        type: GraphQLID,
+      },
+    },
+    resolve: (_, args) => {
+      return userResolver.deleteUser(args.id);
     },
   },
 };

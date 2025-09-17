@@ -1532,7 +1532,7 @@ more....
 
 ## Mutation (Here you used all procedure about above data) -> server,models are same
 
-### Input
+### 1.Input
 
 ### Resolvers
 
@@ -1684,7 +1684,7 @@ mutation{
 }
 ```
 
-### Update
+### 2.Update
 
 ### Resolvers
 
@@ -1795,3 +1795,5 @@ variable-> json formate
 }
 
 ```
+
+### 3. Delete
