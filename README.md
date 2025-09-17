@@ -1837,3 +1837,12 @@ const userResolver = {
 };
 module.exports = { userResolver };
 ```
+
+### Example
+
+```graphiql
+mutation {
+  deleteUser(id: "9")
+}
+
+```
