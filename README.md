@@ -1709,3 +1709,66 @@ const userResolver = {
 };
 module.exports = { userResolver };
 ```
+
+### Schema -> here create only `types/userUpdate.type.js` and write updateUser functional in `mutations/user.mutation`
+
+`types/userUpdate.type.js`
+
+```js
+const { GraphQLInputObjectType, GraphQLString } = require("graphql");
+const { GenderEnumType } = require("../enums/gender.enum");
+
+const updateUserInputType = new GraphQLInputObjectType({
+  name: "updateUserInputType",
+  description: "Update a user by specific field",
+  fields: () => {
+    return {
+      firstName: {
+        type: GraphQLString,
+      },
+      lastName: {
+        type: GraphQLString,
+      },
+      gender: {
+        type: GenderEnumType,
+      },
+      phone: {
+        type: GraphQLString,
+      },
+      email: {
+        type: GraphQLString,
+      },
+    };
+  },
+});
+module.exports = { updateUserInputType };
+```
+
+`mutations/user.mutation`-> Here Write only update user related codes
+
+```js
+const { GraphQLNonNull, GraphQLID } = require("graphql");
+const { UserType } = require("../types/user.type");
+
+const { userResolver } = require("../../resolvers/user.resolver");
+const { userInputType } = require("../types/userInput.type");
+const { updateUserInputType } = require("../types/userUpdate.type");
+
+const userMutation = {
+  updateUser: {
+    type: UserType,
+    args: {
+      id: {
+        type: GraphQLID,
+      },
+      input: {
+        type: updateUserInputType,
+      },
+    },
+    resolve: (_, args) => {
+      return userResolver.updateUser(args.id, args.input);
+    },
+  },
+};
+module.exports = { userMutation };
+```
