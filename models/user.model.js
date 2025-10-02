@@ -5,7 +5,8 @@ const users = [
     lastName: "Faruk",
     gender: "male",
     phone: "01831342230",
-    email: "omarfaruk65142@gmail.com",
+    email: "omarfaruk65142@mail.xyz",
+    createdAt: "2025-10-02T01:56:56.855Z",
     posts: [1, 2, 4],
   },
   {
@@ -15,6 +16,7 @@ const users = [
     gender: "female",
     phone: "01711223344",
     email: "shrabony@example.com",
+    createdAt: "2025-10-02T01:56:56.855Z",
     posts: [3, 5],
   },
   {
@@ -24,6 +26,7 @@ const users = [
     gender: "male",
     phone: "01811111111",
     email: "rahim.uddin@example.com",
+    createdAt: "2025-10-02T01:56:56.855Z",
     posts: [7],
   },
   {
@@ -33,6 +36,7 @@ const users = [
     gender: "female",
     phone: "01722222222",
     email: "karima.begum@example.com",
+    createdAt: "2025-10-02T01:56:56.855Z",
     posts: [6],
   },
   {
@@ -42,6 +46,7 @@ const users = [
     gender: "male",
     phone: "01833333333",
     email: "sabbir.hasan@example.com",
+    createdAt: "2025-10-02T01:56:56.855Z",
     posts: [8, 9],
   },
   {
@@ -51,6 +56,7 @@ const users = [
     gender: "female",
     phone: "01744444444",
     email: "nusrat.jahan@example.com",
+    createdAt: "2025-10-02T01:56:56.855Z",
     posts: [10],
   },
   {
@@ -60,6 +66,7 @@ const users = [
     gender: "male",
     phone: "01855555555",
     email: "mahmud.khan@example.com",
+    createdAt: "2025-10-02T01:56:56.855Z",
     posts: [15],
   },
   {
@@ -69,6 +76,7 @@ const users = [
     gender: "female",
     phone: "01766666666",
     email: "salma.khatun@example.com",
+    createdAt: "2025-10-02T01:56:56.855Z",
     posts: [12, 14],
   },
   {
@@ -78,6 +86,7 @@ const users = [
     gender: "male",
     phone: "01877777777",
     email: "rashed.ali@example.com",
+    createdAt: "2025-10-02T01:56:56.855Z",
     posts: [13],
   },
   {
@@ -87,6 +96,7 @@ const users = [
     gender: "female",
     phone: "01788888888",
     email: "mitu.rahman@example.com",
+    createdAt: "2025-10-02T01:56:56.855Z",
     posts: [11],
   },
 ];

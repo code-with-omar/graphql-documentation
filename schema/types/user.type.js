@@ -7,9 +7,10 @@ const {
   GraphQLList,
 } = require("graphql");
 const { PostType } = require("./post.type");
-const { users } = require("../../models/user.model");
 const { postResolver } = require("../../resolvers/post.reslover");
 const { GenderEnumType } = require("../enums/gender.enum");
+const { DateType } = require("./custom-type/date.type");
+const { EmailType } = require("./custom-type/email.type");
 
 // user type
 const UserType = new GraphQLObjectType({
@@ -33,7 +34,10 @@ const UserType = new GraphQLObjectType({
         type: new GraphQLNonNull(GraphQLString),
       },
       email: {
-        type: GraphQLString,
+        type: EmailType,
+      },
+      createdAt: {
+        type: DateType,
       },
       posts: {
         type: new GraphQLList(PostType),

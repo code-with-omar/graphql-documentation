@@ -7,7 +7,7 @@ const userResolver = {
   getUserById: (id) => users.find((user) => user.id == id),
 
   uploadUser: (input) => {
-    const { firstName, lastName, gender, phone, email, posts } = input;
+    const { firstName, lastName, gender, phone, email, createdAt } = input;
     const newUser = {
       id: users.length + 1,
       firstName,
@@ -15,6 +15,7 @@ const userResolver = {
       gender,
       phone,
       email,
+      createdAt,
       posts: [],
     };
 

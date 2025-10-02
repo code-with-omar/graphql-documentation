@@ -1,5 +1,7 @@
 const { GraphQLInputObjectType, GraphQLString } = require("graphql");
 const { GenderEnumType } = require("../enums/gender.enum");
+const { DateType } = require("./custom-type/date.type");
+const { EmailType } = require("./custom-type/email.type");
 
 const updateUserInputType = new GraphQLInputObjectType({
   name: "updateUserInputType",
@@ -19,7 +21,10 @@ const updateUserInputType = new GraphQLInputObjectType({
         type: GraphQLString,
       },
       email: {
-        type: GraphQLString,
+        type: EmailType,
+      },
+      createdAt: {
+        type: DateType,
       },
     };
   },
