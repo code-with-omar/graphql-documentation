@@ -17,7 +17,7 @@ const DateType = new GraphQLScalarType({
     return value;
   },
   parseLiteral: (AST) => {
-    if (AST.kind === Kind.STRING || AST.Kind === Kind.INT) {
+    if (AST.kind === Kind.STRING || AST.kind === Kind.INT) {
       return AST.value;
     } else {
       throw GraphQLError(`${AST.value} is not a number or string`);
