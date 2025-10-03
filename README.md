@@ -430,7 +430,56 @@ const RootQueryType = new GraphQLObjectType({
 module.exports = { RootQueryType };
 ```
 
-### 3.2 Object Types and Fields
+### 3.2 Custom Scalar Type specifications
+
+In GraphQL, Scalars are the leaf nodes of the type system — they represent atomic pieces of data (strings, numbers, booleans, etc.) that cannot be further broken down.
+
+👉 GraphQL ships with 5 default scalars:
+
+- Int → A signed 32-bit integer
+- Float → A signed double-precision floating-point value
+- String → A UTF-8 string
+- Boolean → true or false
+- ID → A unique identifier, usually serialized as a string
+
+🔹 Why Custom Scalars?
+
+Sometimes built-in scalars are not enough. Example: You might want to handle
+
+- Email
+- DateTime
+- URL
+- Phone Number
+- JSON
+
+Instead of just String, you create a Custom Scalar that:
+
+1. Validates input
+2. Serializes data for responses
+3. Parses input literals from GraphQL queries
+
+The Three Coercion Functions
+
+A custom scalar's implementation must define three functions (or methods) to handle the translation between different representations:
+
+`serialize(value) (Server → Client):`
+
+- Converts the internal backend value (e.g., a JavaScript Date object) into a JSON-compatible format (e.g., an ISO-8601 string or a Unix timestamp) that is sent in the GraphQL response.
+
+- Output: Must be a String, Number, Boolean, or null.
+
+`parseValue(value) (Client Variable → Server):`
+
+- Converts the JSON value (provided by the client as a GraphQL variable) back into the internal backend representation.
+- This is used when the scalar appears as an argument to a field or a value in an Input Object.
+
+`parseLiteral(ast):`
+
+- Handles inline literal values in GraphQL queries (e.g. not from variables, but directly in query).
+
+- Example: date: "2025-10-03" inside query.
+
+### 3.3 Object Types and Fields
 
 `Definition: Object Types`
 Object types define a `set of fields` that can be queried on that type. They are the most common type in GraphQL schemas.
@@ -540,7 +589,7 @@ How It Matches the Concepts
 | **List of object types** | `students` field on the `Query` returns `new GraphQLList(StudentType)` → array of StudentType objects. |
 | **Object types nested**  | `student` field returns a single `StudentType` object via resolver.                                    |
 
-### 3.3 Arguments in GraphQL Schema
+### 3.4 Arguments in GraphQL Schema
 
 `What are Arguments in GraphQL?`
 
