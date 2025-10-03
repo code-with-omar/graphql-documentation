@@ -479,6 +479,42 @@ A custom scalar's implementation must define three functions (or methods) to han
 
 - Example: date: "2025-10-03" inside query.
 
+Examples:
+
+#### 3.2.1 `Date` custom type
+
+// scheme/types/custom-type/date.type.js
+
+```js
+const { GraphQLScalarType, GraphQLError, Kind } = require("graphql");
+
+const DateType = new GraphQLScalarType({
+  name: "DateType",
+  description: "It represents a date",
+  // Server → Client (how the Date is sent out)
+  serialize: (value) => {
+    const date = new Date(value);
+    if (date.toString() === "Invalid Date") {
+      throw new GraphQLError(`${value} is not a valid date`);
+    }
+    // return date.toISOString();
+    return date.toLocaleDateString();
+  },
+  // Client → Server (when client sends a variable)
+  parseValue: (value) => {
+    return value;
+  },
+  parseLiteral: (AST) => {
+    if (AST.kind === Kind.STRING || AST.kind === Kind.INT) {
+      return AST.value;
+    } else {
+      throw GraphQLError(`${AST.value} is not a number or string`);
+    }
+  },
+});
+module.exports = { DateType };
+```
+
 ### 3.3 Object Types and Fields
 
 `Definition: Object Types`
